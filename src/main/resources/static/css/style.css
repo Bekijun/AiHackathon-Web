@@ -1,0 +1,441 @@
+/*──────────────────────────────────────────────────────────────────────────────
+  Google Font
+──────────────────────────────────────────────────────────────────────────────*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+/*──────────────────────────────────────────────────────────────────────────────
+  Reset & 기본 세팅
+──────────────────────────────────────────────────────────────────────────────*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  공통 컨테이너
+──────────────────────────────────────────────────────────────────────────────*/
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  버튼 스타일
+──────────────────────────────────────────────────────────────────────────────*/
+.btn {
+    display: inline-block;
+    margin: 0.5rem 0.25rem 0 0;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
+}
+.btn-primary {
+    background: #269eff;
+    color: #fff;
+}
+.btn-primary:hover {
+    background: #1a8de0;
+}
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  로그인·회원가입 카드 공통
+──────────────────────────────────────────────────────────────────────────────*/
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 2rem 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.page-title {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+.sub-title {
+    margin-bottom: 1.5rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* 입력 그룹 */
+.input-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+.input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  회원가입만 2컬럼 레이아웃
+──────────────────────────────────────────────────────────────────────────────*/
+.register-card .two-col {
+    display: flex;
+    gap: 1.5rem;
+}
+.register-card .two-col .col {
+    flex: 1;
+}
+/* 세로 구분선 */
+.register-card .form-wrapper {
+    position: relative;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+.register-card .form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    left: 50%;
+    width: 1px;
+    background: #eee;
+    transform: translateX(-50%);
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  대시보드 헤더
+──────────────────────────────────────────────────────────────────────────────*/
+.main-header {
+    display: block;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    align-items: center;
+    background: #333;
+    height: 70px;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+.main-header .logo {
+    height: 40px;
+    margin-right: 1rem;
+}
+.main-header .logout-btn {
+    margin-left: auto;
+    background: #6c757d;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.main-header .logout-btn:hover {
+    background: #5a6268;
+}
+
+/* 카드 공통 */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ────────────────────────────────────────────────────────────────────
++   대시보드 전체를 세로 스크롤 처리
++──────────────────────────────────────────────────────────────────── */
+#management-container {
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  병상 관리 & 진료과 관리 섹션
+──────────────────────────────────────────────────────────────────────────────*/
+/* 두 필드 가로 정렬 */
+.two-col {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.two-col .col {
+    flex: 1;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  탭 & 검색 박스
+──────────────────────────────────────────────────────────────────────────────*/
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.tabs .tab {
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    background: #ddd;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+.tabs .tab.active {
+    background: #269eff;
+    color: #fff;
+}
+.search-box {
+    margin-left: auto;
+    position: relative;
+}
+.search-box input {
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.search-box .icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  응급 콜 카드 스타일
+──────────────────────────────────────────────────────────────────────────────*/
+.call-card,
+.accepted-call-card {
+    position: relative;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.call-card::before,
+.accepted-call-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: #269eff;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.call-actions button {
+    margin-left: 0.5rem;
+}
+
+/*──────────────────────────────────────────────────────────────────────────────
+  콜 이력 테이블 스타일
+──────────────────────────────────────────────────────────────────────────────*/
+.history-panel table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.history-panel th,
+.history-panel td {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+.label-accepted {
+    background: #d4f8d4;
+    color: #2a7d2a;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+.label-rejected {
+    background: #ffdada;
+    color: #a12a2a;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+}
+
+/* reset & 기본 폰트 설정 */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Arial', sans-serif; background:#f5f6fa; color:#333; }
+
+/* 컨테이너 */
+.card {
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    padding:2rem;
+}
+
+#management-container .card {
+    max-width: none;
+    margin: 0 0 1.5rem;
+}
+
+/* 입력 필드 */
+.input-group { margin-bottom:1.5rem; }
+.input-group label { display:block; margin-bottom:0.5rem; font-weight:bold; }
+.input-group input {
+    width:100%;
+    padding:0.75rem 1rem;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:1rem;
+}
+
+/* 버튼 */
+.btn {
+    display:inline-block;
+    width:100%;
+    padding:0.75rem;
+    border:none;
+    border-radius:8px;
+    font-size:1.1rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+.btn-primary { background:#269eff; color:#fff; }
+.btn-primary:hover { background:#1a8de0; }
+.btn-secondary { background:#aaa; color:#fff; }
+.btn-secondary:hover { background:#888; }
+
+/* 병원등록, 대시보드 공통 레이아웃 */
+.two-col { display:flex; gap:2rem; }
+.two-col .col { flex:1; }
+
+/* 태그(진료과) */
+.tag {
+    display:inline-flex;
+    align-items:center;
+    background:#269eff;
+    color:#fff;
+    padding:0.4rem 0.8rem;
+    border-radius:16px;
+    margin:0.25rem;
+    font-size:0.9rem;
+}
+.tag .remove { margin-left:0.4rem; cursor:pointer; }
+
+/* 탭 & 검색 */
+.tabs { margin-bottom:1rem; }
+.tabs .tab {
+    display:inline-block;
+    padding:0.6rem 1.2rem;
+    border-radius:16px;
+    background:#ddd;
+    margin-right:0.5rem;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+.tabs .tab.active { background:#269eff; color:#fff; }
+
+.search-box {
+    position:relative;
+    float:right;
+}
+.search-box input {
+    padding:0.6rem 2.5rem 0.6rem 1rem;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+.search-box .icon {
+    position:absolute;
+    right:0.8rem; top:50%; transform:translateY(-50%);
+    font-size:1.2rem; color:#666;
+}
+
+/* 두 칸으로 나란히 */
+.two-col {
+    display: flex;
+    gap: 2rem;
+}
+.two-col .col {
+    flex: 1;
+}
+
+/* 왼쪽 input + select + button 그룹 */
+.department-input-group {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+.department-input-group label {
+    flex-basis: 100%;
+}
+.department-input-group select {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.department-input-group .btn {
+    flex-shrink: 0;
+}
+
+/* 오른쪽 태그 컨테이너 */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    min-height: 48px;
+    background: #fafafa;
+}
+
+/* 개별 태그 */
+.department-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+.remove-tag {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}

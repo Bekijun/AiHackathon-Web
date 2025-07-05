@@ -4,6 +4,7 @@
  */
 package deu.se.hackathon;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class SystemController {
     @GetMapping("/")
-    public String index() {
-        log.info("index() called...");
-        return "index";
+    public String home() {
+        log.info("home() called...");
+        return "auth/login";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "auth/login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "auth/register";
     }
 }

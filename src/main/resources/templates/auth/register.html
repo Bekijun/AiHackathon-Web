@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>숨결 서비스 – 회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+<div class="auth-card register-card">
+    <h2 class="page-title">병원 관계자 회원가입</h2>
+    <p class="sub-title">본 서비스는 인증된 의료기관만 가입 가능합니다.</p>
+    <div class="form-wrapper">
+        <form id="signup-form" th:action="@{/register}" method="post">
+            <div class="two-col">
+                <div class="col">
+                    <div class="input-group">
+                        <label for="signup-email">이메일</label>
+                        <input type="email" id="signup-email" />
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">비밀번호</label>
+                        <input type="password" id="signup-password" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hospital-name">병원명</label>
+                        <input id="hospital-name" type="text" />
+                    </div>
+                    <div class="input-group">
+                        <label for="business-number">사업자 등록 번호</label>
+                        <input id="business-number" type="text" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <label for="institution-code">요양기관 번호</label>
+                        <input id="institution-code" type="text" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hospital-address">병원 주소</label>
+                        <input id="hospital-address" type="text" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hospital-lat">위도 (Latitude)</label>
+                        <input id="hospital-lat" type="number" placeholder="예: 35.1796" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hospital-lon">경도 (Longitude)</label>
+                        <input id="hospital-lon" type="number" placeholder="예: 129.0756" />
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="submit-signup">인증 및 가입</button>
+        </form>
+    </div>
+    <p class="toggle-link">
+        이미 계정이 있으신가요?
+        <a th:href="@{/login}">로그인</a>
+    </p>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>숨결 서비스 – 로그인</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+<div class="auth-card login-card">
+    <h2 class="page-title">숨결 서비스</h2>
+    <form id="login-form" th:action="@{/login}" method="post">
+        <div class="input-group">
+            <label for="login-email">이메일</label>
+            <input type="email" id="login-email" name="email" required />
+        </div>
+        <div class="input-group">
+            <label for="login-password">비밀번호</label>
+            <input type="password" id="login-password" name="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">로그인</button>
+        <a th:href="@{/register}">
+            <button type="button" class="btn btn-secondary">회원가입</button>
+        </a>
+    </form>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

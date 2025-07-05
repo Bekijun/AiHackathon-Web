@@ -11,7 +11,7 @@
 	<groupId>deu.se</groupId>
 	<artifactId>hackathon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>hackathon</name>
 	<description>해커톤 프로젝트</description>
 	<url/>
@@ -45,14 +45,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-                <!-- embedded tomcat과 JSTL 관련 의존성 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- embedded tomcat과 JSTL 관련 의존성 -->
                 <!-- 240102 LJM: begin -->
                 <dependency>
                     <groupId>org.apache.tomcat.embed</groupId>

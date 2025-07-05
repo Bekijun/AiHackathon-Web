@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>숨결 서비스 – 대시보드</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+<div class="container" id="management-container">
+    <header class="main-header">
+        <img class="logo" th:src="@{/images/weblogo_white.png}" alt="숨결 로고" />
+        <a href="/auth/login" class="logout-btn">로그아웃</a>
+    </header>
+
+    <!-- 1. 병상 관리 -->
+    <section class="card">
+        <h3>실시간 응급실 현황 관리</h3>
+        <div class="two-col">
+            <div class="col">
+                <div class="input-group">
+                    <label for="total-beds">전체 병상 수</label>
+                    <input type="number" id="total-beds" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <label for="available-beds">가용 병상 수</label>
+                    <input type="number" id="available-beds" />
+                </div>
+            </div>
+        </div>
+        <button id="update-beds-button" class="btn btn-primary">업데이트</button>
+        <p id="update-message"></p>
+    </section>
+
+    <!-- 2. 진료 과 관리 -->
+    <section class="card">
+        <h3>진료 가능 과 관리</h3>
+        <div class="two-col">
+            <!-- 왼쪽: 콤보 + 버튼 -->
+            <div class="col">
+                <div class="department-input-group">
+                    <label for="department-select">진료 과 추가</label>
+                    <select id="department-select"></select>
+                    <button type="button" id="add-department-button" class="btn btn-primary">
+                        추가
+                    </button>
+                </div>
+            </div>
+            <!-- 오른쪽: 태그 보여줄 곳 -->
+            <div class="col">
+                <div id="department-tags-container" class="tag-container"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 3. 대기 중인 응급 요청 -->
+    <section class="card">
+        <h3>실시간 응급 요청</h3>
+        <div id="calls-container">
+            <p id="no-calls-message">현재 대기 중인 응급 요청이 없습니다.</p>
+        </div>
+    </section>
+
+    <!-- 4. 수락된 환자 목록 -->
+    <section class="card">
+        <h3>우리 병원이 수락한 환자</h3>
+        <div id="accepted-calls-container">
+            <p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>
+        </div>
+    </section>
+
+    <!-- 5. 콜 이력 (탭 + 검색 + 테이블) -->
+    <section class="card">
+        <div class="tabs">
+            <span class="tab active" data-status="all">전체</span>
+            <span class="tab" data-status="accepted">이송 완료</span>
+            <span class="tab" data-status="rejected">수용 불가</span>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="검색" />
+            <span class="icon">🔍</span>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>처리 시간</th>
+                <th>콜 ID</th>
+                <th>환자 정보</th>
+                <th>처리 상태</th>
+            </tr>
+            </thead>
+            <tbody id="history-table-body">
+            <!-- JS 로딩 시 렌더링 -->
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
