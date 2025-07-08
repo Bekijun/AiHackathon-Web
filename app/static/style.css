@@ -252,3 +252,9 @@ input[type="email"], input[type="password"], input[type="text"], input[type="num
     background-color: #fafafa;
     color: #333;
 }
+#ai-summary-container {
+    font-size: 14px;           /* 🔺 원하는 크기로 조정 (ex: 18px, 24px) */
+    white-space: pre-wrap;     /* 개행 문자 유지 */
+    line-height: 1.6;          /* 줄 간격 */
+    font-family: 'Courier New', monospace;  /* 선택사항: 코드 스타일 폰트 */
+}

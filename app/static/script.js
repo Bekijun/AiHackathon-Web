@@ -410,33 +410,51 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-// 예시: /api/summary 에서 [{ type: 'primary'|'secondary', text: '요약문' }, ...] 형태로 응답
-async function loadAiSummaries() {
-    try {
-        const res = await fetch('/api/summary');
-        if (!res.ok) throw new Error(`${res.status}`);
-        const data = await res.json();
+// --- 앱 시작 시 초기화 ---
+populateDepartmentSelect();
 
-        const container = document.getElementById('ai-summary-container');
-        container.innerHTML = '';  // 초기화
+firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+        try {
+            // 1. 사용자 UID로 users/{uid} 문서 가져오기
+            const userDoc = await db.collection("users").doc(user.uid).get();
+            if (!userDoc.exists) throw new Error("❌ 사용자 문서 없음");
 
-        data.forEach(item => {
-            const box = document.createElement('div');
-            box.classList.add('summary-box', item.type === 'primary' ? 'primary' : 'secondary');
-            box.innerText = item.text;
-            container.appendChild(box);
-        });
-    } catch (e) {
-        console.error('AI 요약 불러오기 실패:', e);
-    }
-}
+            // 2. 문서 안의 hospitalId 필드 가져오기 (이게 진짜 병원 Firestore ID)
+            const hospitalId = userDoc.data().hospitalId;
+            console.log("🏥 로그인한 병원의 Firestore ID:", hospitalId);
 
-// 관리 화면이 보일 때 한 번만 호출
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('management-container').style.display !== 'none') {
-        loadAiSummaries();
+            // 3. 요약 분석 요청
+            fetchAISummary(hospitalId);
+
+        } catch (error) {
+            console.error("🚨 병원 ID 로딩 실패:", error);
+            document.getElementById("ai-summary-container").innerText = "❌ 병원 데이터를 불러올 수 없습니다.";
+        }
+    } else {
+        // 로그아웃 처리
+        document.getElementById("auth-container").style.display = "block";
+        document.getElementById("management-container").style.display = "none";
     }
 });
 
-// --- 앱 시작 시 초기화 ---
-populateDepartmentSelect();
+
+async function fetchAISummary(hospitalId) {
+    console.log("✅ fetchAISummary 전달 ID:", hospitalId);  // 👈 이 줄 추가
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8083/api/ai-summary?hospital_id=${hospitalId}`);
+        const data = await res.json();
+        console.log("📦 AI 요약 응답:", data);
+        document.getElementById("ai-summary-container").innerHTML = `<pre>${data.result}</pre>`;
+    } catch (err) {
+        console.error("❌ AI 분석 실패:", err);
+        document.getElementById("ai-summary-container").innerText = "❌ AI 분석 실패";
+    }
+}
+
+
+
+
+
+
