@@ -19,7 +19,19 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
+    min-width: 320px;
+
+    /* ✅ 줄바꿈 및 넘침 방지 추가 */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+
+    /* 기존 */
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
 }
+
 
 h1, h2 {
     text-align: center;
@@ -221,29 +233,35 @@ input[type="email"], input[type="password"], input[type="text"], input[type="num
 /* --- AI 요약 스타일 --- */
 #ai-summary-section {
     margin-bottom: 2rem;
+    /* overflow: hidden; ← 이 줄 제거 */
 }
 
 #ai-summary-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    max-width: 100%;
 }
 
-/* 기본 요약 박스 */
+
 .summary-box {
-    padding: 20px;
-    border-radius: 12px;
-    font-size: 1rem;
-    line-height: 1.5;
+    white-space: pre-wrap !important;   /* ✅ 줄바꿈 보존 + 자동 줄바꿈 */
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    width: 100%;
+    max-width: 100%;
 }
 
-/* 파란 테두리 강조 요약 */
+/* 파란 테두리 강조 요약
 .summary-box.primary {
     border: 2px solid #007bff;
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
     background-color: #ffffff;
     color: #333;
-}
+}*/
 
 /* 회색 테두리 보통 요약 */
 .summary-box.secondary {
@@ -252,9 +270,33 @@ input[type="email"], input[type="password"], input[type="text"], input[type="num
     background-color: #fafafa;
     color: #333;
 }
-#ai-summary-container {
-    font-size: 14px;           /* 🔺 원하는 크기로 조정 (ex: 18px, 24px) */
-    white-space: pre-wrap;     /* 개행 문자 유지 */
-    line-height: 1.6;          /* 줄 간격 */
-    font-family: 'Courier New', monospace;  /* 선택사항: 코드 스타일 폰트 */
+.summary-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.summary-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.summary-text hr {
+    display: none;
+}
+
+.summary-text {
+    border-bottom: none !important;
+    box-shadow: none !important;
 }

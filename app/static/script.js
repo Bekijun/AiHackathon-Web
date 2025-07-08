@@ -457,21 +457,53 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
 
 async function fetchAISummary(hospitalId) {
-    console.log("✅ fetchAISummary 전달 ID:", hospitalId);  // 👈 이 줄 추가
+    console.log("✅ fetchAISummary 전달 ID:", hospitalId);
 
     try {
         const res = await fetch(`http://127.0.0.1:8083/api/ai-summary?hospital_id=${hospitalId}`);
         const data = await res.json();
         console.log("📦 AI 요약 응답:", data);
-        document.getElementById("ai-summary-container").innerHTML = `<pre>${data.result}</pre>`;
+
+        const container = document.getElementById("ai-summary-container");
+        container.innerHTML = ""; // 기존 내용 제거
+
+        // ⛔ 구분선으로 split하는 방식은 취약하므로, 제목 기준으로 분리
+        const raw = data.result;
+
+        const section1 = raw.match(/📊 시간대별 환자 수([\s\S]*?)👶 연령대별 환자 수/);
+        const section2 = raw.match(/👶 연령대별 환자 수([\s\S]*?)🩺 증상별 진료과목 추천/);
+        const section3 = raw.match(/🩺 증상별 진료과목 추천([\s\S]*)/);
+
+        const sections = [
+            { title: "📊 시간대별 환자 수", content: section1?.[1]?.trim() || "정보 없음" },
+            { title: "👶 연령대별 환자 수", content: section2?.[1]?.trim() || "정보 없음" },
+            { title: "🩺 증상별 진료과목 추천", content: section3?.[1]?.trim() || "정보 없음" },
+        ];
+
+        sections.forEach(({ title, content }) => {
+            const card = document.createElement("div");
+            card.className = "summary-card";
+
+            const header = document.createElement("div");
+            header.className = "summary-title";
+            header.textContent = title;
+
+            const body = document.createElement("div");
+            body.className = "summary-text";
+            // 🔧 구분선 제거 + 줄바꿈 처리
+            const cleanContent = content
+                .split('\n')
+                .filter(line => !line.includes("━━━━━━━━"))  // 밑줄 제거
+                .join("<br>");
+            body.innerHTML = cleanContent; // ✅ cleanContent를 실제로 사용
+
+            card.appendChild(header);
+            card.appendChild(body);
+            container.appendChild(card);
+        });
+
     } catch (err) {
         console.error("❌ AI 분석 실패:", err);
         document.getElementById("ai-summary-container").innerText = "❌ AI 분석 실패";
     }
 }
-
-
-
-
-
-
