@@ -1,0 +1,176 @@
+<!--
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 응급실 관리</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+
+<div class="container" id="management-container">
+    <main>
+        <header class="page-header">
+            <h1 id="management-title"></h1>
+            <button id="logout-button" class="btn btn-secondary">로그아웃</button>
+        </header>
+
+        <h2 class="section-title">실시간 응급실 현황 관리</h2>
+        <div class="section-card">
+            <div class="bed-status">
+                <div class="form-group">
+                    <label for="total-beds">전체 병상 수</label>
+                    <input type="number" id="total-beds" value="20" />
+                </div>
+                <div class="form-group">
+                    <label for="available-beds">가용 병상 수</label>
+                    <input type="number" id="available-beds" value="5" />
+                </div>
+                <button class="btn btn-primary" id="update-beds-button">업데이트</button>
+            </div>
+            <p id="update-message"></p>
+        </div>
+
+        <h2 class="section-title">진료 가능 과 관리</h2>
+        <div class="section-card department-card">
+            <div class="department-input-group">
+                <select id="department-select"></select>
+                <button class="btn btn-small btn-primary" id="add-department-button">추가</button>
+            </div>
+            <div id="department-tags-container"></div>
+        </div>
+
+        <h2 class="section-title">실시간 응급 요청</h2>
+        <div class="section-card calls-card">
+            <div id="calls-container">
+                <p id="no-calls-message">현재 대기 중인 응급 요청이 없습니다.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">우리 병원이 수락한 환자</h2>
+        <div class="section-card accepted-card">
+            <div id="accepted-calls-container">
+                <p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>
+            </div>
+        </div>
+
+        <section id="ai-summary-section">
+            <h2 class="section-title">AI 요약</h2>
+            <div class="section-card ai-card">
+                <div id="ai-summary-container">
+                    <div class="summary-box primary"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 응급실 관리</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+<header class="global-header">
+    <div><h2>숨결</h2> </div>
+    <button id="logout-button" class="btn btn-secondary">로그아웃</button>
+</header>
+
+<div class="container" id="management-container">
+    <h1 id="management-title" class="page-title"></h1>
+    <main>
+        <h2 class="section-title">실시간 응급실 현황 관리</h2>
+        <div class="section-card">
+            <div class="bed-status">
+                <div class="form-group">
+                    <label for="total-beds">전체 병상 수</label>
+                    <input type="number" id="total-beds"/>
+                </div>
+                <div class="form-group">
+                    <label for="available-beds">가용 병상 수</label>
+                    <input type="number" id="available-beds"/>
+                </div>
+                <button class="btn btn-primary" id="update-beds-button">저장</button>
+            </div>
+            <p id="update-message"></p>
+        </div>
+
+        <h2 class="section-title">진료 가능 과 관리</h2>
+        <div class="section-card department-card">
+            <div class="department-input-group">
+                <select id="department-select"></select>
+                <button class="btn btn-small btn-primary" id="add-department-button">추가</button>
+            </div>
+            <div id="department-tags-container"></div>
+        </div>
+
+        <h2 class="section-title">실시간 응급 요청</h2>
+        <div class="section-card calls-card">
+            <div id="calls-container">
+                <p id="no-calls-message">현재 대기 중인 응급 요청이 없습니다.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">우리 병원이 수락한 환자</h2>
+        <div class="section-card accepted-card">
+            <div id="accepted-calls-container">
+                <p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">응급콜 기록</h2>
+        <div class="section-card history-card">
+            <div class="history-filter">
+                <button class="btn btn-primary active" data-filter="all">전체</button>
+                <button class="btn btn-secondary" data-filter="accepted">수용 완료</button>
+                <button class="btn btn-secondary" data-filter="rejected">수용 불가</button>
+                <div class="history-search">
+                    <input type="text" id="history-search-input" placeholder="검색..." />
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="history-table-container">
+                <table id="history-table">
+                    <thead>
+                    <tr>
+                        <th>처리 시간</th>
+                        <th>환자 정보</th>
+                        <th>처리 상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- JS 렌더링 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <section id="ai-summary-section">
+            <h2 class="section-title">AI 요약</h2>
+            <div class="section-card ai-card">
+                <div id="ai-summary-container">
+                    <div class="summary-box primary"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

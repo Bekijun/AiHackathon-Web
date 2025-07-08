@@ -1,3 +1,4 @@
+/*
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
 body {
@@ -20,6 +21,308 @@ body {
     width: 100%;
     max-width: 600px;
     min-width: 320px;
+
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+
+
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+h1, h2 {
+    text-align: center;
+    color: #0056b3;
+}
+
+h1 { margin-bottom: 10px; }
+h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #555;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+input[type="email"], input[type="password"], input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+.btn {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background-color 0.3s;
+}
+.btn:hover { background-color: #0056b3; }
+#signup-form .btn { width: 100%; }
+
+#auth-container h2 { text-align: center; }
+#management-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+#management-container header h1 { font-size: 1.5rem; margin: 0; color: #333; text-align: left; border: none; }
+.btn-secondary { background-color: #6c757d; width: auto; padding: 8px 15px; font-size: 0.9rem; }
+.btn-secondary:hover { background-color: #5a6268; }
+
+.management-section { margin-bottom: 30px; }
+.bed-status { display: flex; gap: 15px; align-items: flex-end; }
+.bed-status .form-group { flex: 1; margin-bottom: 0; }
+.bed-status .btn { flex-shrink: 0; width: auto; }
+
+#update-message { margin-top: 15px; color: green; text-align: center; font-weight: 500; min-height: 1.2em; transition: opacity 0.5s; }
+
+
+#department-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    min-height: 40px;
+}
+
+.department-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.remove-tag {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #eee;
+    transition: color 0.2s;
+}
+
+.remove-tag:hover {
+    color: #ffdddd;
+}
+
+.department-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.department-input-group input {
+    flex-grow: 1;
+}
+
+.department-input-group .btn {
+    flex-shrink: 0;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+
+.btn-small {
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+#department-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    min-height: 40px;
+    background-color: #fafafa;
+}
+
+.department-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.remove-tag {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #d4eaff;
+}
+
+.remove-tag:hover {
+    color: white;
+}
+
+
+/* 수락된 환자 목록 섹션
+.accepted-calls-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+#accepted-calls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 1rem;
+}
+
+/* 수락된 환자 카드는 파란색 테두리로 구분
+.accepted-call-card {
+    border: 1px solid #ddd;
+    border-left: 5px solid #007bff; /* 파란색
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f8f9fa; /* 약간 다른 배경색
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.accepted-call-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.accepted-call-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.accepted-call-card strong {
+    color: #333;
+}
+
+.accepted-call-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end; /* 버튼을 오른쪽으로 정렬
+}
+
+/* --- AI 요약 스타일 ---
+#ai-summary-section {
+    margin-bottom: 2rem;
+    /* overflow: hidden; ← 이 줄 제거
+}
+
+#ai-summary-container {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    max-width: 100%;
+}
+
+
+.summary-box {
+    white-space: pre-wrap !important;   /* ✅ 줄바꿈 보존 + 자동 줄바꿈
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* 파란 테두리 강조 요약
+.summary-box.primary {
+    border: 2px solid #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+    background-color: #ffffff;
+    color: #333;
+}*/
+
+/* 회색 테두리 보통 요약
+.summary-box.secondary {
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #fafafa;
+    color: #333;
+}
+.summary-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.summary-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.summary-text hr {
+    display: none;
+}
+
+.summary-text {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    min-width: 320px;
+    margin: 0 auto;
 
     /* ✅ 줄바꿈 및 넘침 방지 추가 */
     overflow-wrap: break-word;
@@ -46,7 +349,6 @@ h2 {
     font-size: 1.2rem;
     color: #555;
     text-align: left;
-    border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
 
@@ -299,4 +601,377 @@ input[type="email"], input[type="password"], input[type="text"], input[type="num
 .summary-text {
     border-bottom: none !important;
     box-shadow: none !important;
+}
+
+/* ─── 페이지 헤더 ─── */
+.page-header {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+.page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* ─── 섹션 제목 ─── */
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* ─── 공통 카드 스타일 ─── */
+.section-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+/* ─── 병상 현황 ─── */
+.bed-status {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+.bed-status .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+.bed-status label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+.bed-status input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1.1rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.bed-status .btn-primary {
+    flex-shrink: 0;
+    padding: 10px 24px;
+    font-size: 1rem;
+}
+
+/* ─── 과목 관리 ─── */
+.department-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.department-input-group {
+    display: flex;
+    gap: 10px;
+}
+.department-input-group select {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+/* 과목 태그 */
+#department-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    min-height: 46px;
+}
+.department-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+.remove-tag {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.remove-tag:hover {
+    color: #ffdddd;
+}
+
+/* ─── 응급 요청 카드 ─── */
+.calls-card {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.call-card {
+    position: relative;
+    padding: 20px;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.call-card:before {
+    content: "응급 콜";
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 2px;
+    width: calc(100% - 32px);
+}
+.call-card h3 {
+    margin-top: 1.8rem;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.call-card p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+.call-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* ─── 수락된 환자 카드 ─── */
+.accepted-card {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.accepted-call-card {
+    border-left: 5px solid #007bff;
+    background-color: #f8f9fa;
+    padding: 18px;
+    margin-bottom: 1.2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.accepted-call-card h3 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.accepted-call-card p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+.accepted-call-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* ─── 버튼 색상 변형 ─── */
+.btn-primary {
+    background-color: #3578e5;
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.btn-primary:hover {
+    background-color: #265cb8;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* ─── AI 요약 ─── */
+.ai-card {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* 진료 가능 과 관리: 좌우 정렬 */
+.department-card {
+    display: flex;           /* 좌우로 배치 */
+    flex-direction: row;     /* 세로가 아니라 가로 */
+    align-items: flex-start; /* 위쪽 정렬 */
+    gap: 20px;               /* 사이 간격 */
+}
+
+/* 왼쪽 입력부 너비 지정 */
+.department-card .department-input-group {
+    flex: 0 0 300px;         /* 고정 300px, 필요시 조정 */
+    margin-bottom: 0;        /* 기본 margin 제거 */
+}
+
+/* 오른쪽 태그 리스트가 나머지 공간 채우기 */
+.department-card #department-tags-container {
+    flex: 1;
+    margin: 0;               /* 기본 margin 제거 */
+}
+
+/* ── 글로벌 헤더 ── */
+.global-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    background-color: #333;               /* 검은 배경 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* ── 글로벌 헤더 전용 h2 오버라이드 ── */
+.global-header h2 {
+    color: #fff !important;       /* 흰색 글씨 */
+    margin: 0;                     /* 필요에 따라 조정 */
+    padding: 0;                    /* 헤더 안쪽 여백 초기화 */
+    border-bottom: none !important;/* 밑줄 제거 */
+    font-size: 1.5rem;             /* 폰트 크기 필요에 따라 변경 */
+}
+
+/* 헤더 안의 버튼 스타일 (원래 .btn-secondary를 사용) */
+.global-header .btn-secondary {
+    background-color: #666;
+}
+.global-header .btn-secondary:hover {
+    background-color: #555;
+}
+
+/* ── 본문과 헤더 간격 ── */
+#management-container {
+    margin-top: 20px;
+}
+
+/* ── 본문 타이틀 ── */
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+/* ── 응급콜 기록 ── */
+.history-card {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.history-filter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.history-filter .btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.history-filter .btn.active {
+    background-color: #3578e5;
+    color: #fff;
+}
+
+.history-filter .btn-secondary {
+    background-color: #e3e7eb;
+    color: #555;
+}
+
+.history-filter .btn-secondary.active {
+    background-color: #5a96e3;
+    color: #fff;
+}
+
+.history-search {
+    margin-left: auto;
+    position: relative;
+}
+
+.history-search input {
+    padding: 8px 36px 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    width: 200px;
+}
+
+.history-search .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #888;
+}
+
+.history-table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#history-table th,
+#history-table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+#history-table th {
+    background-color: #f9fafb;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.history-filter .btn-primary.active {
+    background-color: #3578e5;
+    color: #fff;
 }

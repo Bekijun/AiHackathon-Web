@@ -1,127 +1,79 @@
+<!--
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>숨결 서비스 - 응급실 관리</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 로그인</title>
+    <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
 
-    <div class="container" id="auth-container">
-        <div id="login-container">
-            <h1>숨결 서비스</h1>
-            <h2>병원 관계자 로그인</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-email">이메일</label>
-                    <input type="email" id="login-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">비밀번호</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="btn">로그인</button>
-            </form>
-            <p class="toggle-link">
-                계정이 없으신가요? <a href="#" id="show-signup-link">회원가입</a>
-            </p>
-        </div>
-
-        <div id="signup-container" style="display: none;">
-            <h1>숨결 서비스</h1>
-            <h2>병원 관계자 회원가입</h2>
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-email">이메일</label>
-                    <input type="email" id="signup-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">비밀번호</label>
-                    <input type="password" id="signup-password" minlength="6" required>
-                </div>
-                <div class="form-group">
-                    <label for="hospital-name">병원 이름</label>
-                    <input type="text" id="hospital-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="hospital-address">병원 주소</label>
-                    <input type="text" id="hospital-address" required>
-                </div>
-                <div class="form-group">
-                    <label for="hospital-lat">위도 (Latitude)</label>
-                    <input type="number" step="any" id="hospital-lat" placeholder="예: 35.1796" required>
-                </div>
-                <div class="form-group">
-                    <label for="hospital-lon">경도 (Longitude)</label>
-                    <input type="number" step="any" id="hospital-lon" placeholder="예: 129.0756" required>
-                </div>
-                <button type="submit" class="btn">회원가입</button>
-            </form>
-            <p class="toggle-link">
-                이미 계정이 있으신가요? <a href="#" id="show-login-link">로그인</a>
-            </p>
-        </div>
+<div class="container" id="auth-container">
+    <div id="login-container">
+        <h1>숨결</h1>
+        <h2>병원 관계자 로그인</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">이메일</label>
+                <input type="email" id="login-email" required />
+            </div>
+            <div class="form-group">
+                <label for="login-password">비밀번호</label>
+                <input type="password" id="login-password" required />
+            </div>
+            <button type="submit" class="btn">로그인</button>
+        </form>
+        <p class="toggle-link">
+            계정이 없으신가요? <a href="/register" id="show-signup-link">회원가입</a>
+        </p>
     </div>
+</div>
 
-    <div class="container" id="management-container" style="display: none;">
-        <header>
-            <h1 id="management-title"></h1>
-            <button id="logout-button" class="btn btn-secondary">로그아웃</button>
-        </header>
-        <main>
-            <h2>실시간 응급실 현황 관리</h2>
-            <div class="bed-status">
-                <div class="form-group">
-                    <label for="total-beds">전체 병상 수</label>
-                    <input type="number" id="total-beds" value="20">
-                </div>
-                <div class="form-group">
-                    <label for="available-beds">가용 병상 수</label>
-                    <input type="number" id="available-beds" value="5">
-                </div>
-                 <button class="btn" id="update-beds-button">업데이트</button>
-            </div>
-            <p id="update-message"></p>
-            <div class="department-management">
-                <h2>진료 가능 과 관리</h2>
-                <div class="form-group">
-                    <label for="department-select">진료과 추가</label>
-                    <select id="department-select"></select>
-                    <button class="btn btn-small" id="add-department-button">추가</button>
-                </div>
-                <div id="department-tags-container">
-                </div>
-            </div>
-            <div class="calls-section">
-                <h2>실시간 응급 요청</h2>
-                <div id="calls-container">
-                    <p id="no-calls-message">현재 대기 중인 응급 요청이 없습니다.</p>
-                </div>
-            </div>
-            <div class="accepted-calls-section">
-                <h2>우리 병원이 수락한 환자</h2>
-                <div id="accepted-calls-container">
-                    <p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>
-                </div>
-            </div>
-            <section id="ai-summary-section">
-                <h2>AI 요약</h2>
-                <div id="ai-summary-container">
-                    <div class="summary-box primary">
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>
 
-                    </div>
-                </div>
-            </section>
+-->
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 로그인</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
 
-        </main>
+<body>
+
+<div class="container" id="auth-container">
+    <div id="login-container">
+        <h1>숨결</h1>
+        <h2>병원 관계자 로그인</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">이메일</label>
+                <input type="email" id="login-email" required />
+            </div>
+            <div class="form-group">
+                <label for="login-password">비밀번호</label>
+                <input type="password" id="login-password" required />
+            </div>
+            <button type="submit" class="btn">로그인</button>
+        </form>
+        <p class="toggle-link">
+            계정이 없으신가요? <a href="/register" id="show-signup-link">회원가입</a>
+        </p>
     </div>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="../static/script.js"></script>
+</div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="/static/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,142 @@
+<!--
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 회원가입</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+
+<div class="container" id="auth-container">
+    <div id="signup-container">
+        <h1>숨결</h1>
+        <h2>병원 관계자 회원가입</h2>
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="signup-email">이메일</label>
+                <input type="email" id="signup-email" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-password">비밀번호</label>
+                <input type="password" id="signup-password" minlength="6" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-name">병원 이름</label>
+                <input type="text" id="hospital-name" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-address">병원 주소</label>
+                <input type="text" id="hospital-address" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-lat">위도 (Latitude)</label>
+                <input type="number" step="any" id="hospital-lat" placeholder="예: 35.1796" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-lon">경도 (Longitude)</label>
+                <input type="number" step="any" id="hospital-lon" placeholder="예: 129.0756" required />
+            </div>
+            <button type="submit" class="btn">회원가입</button>
+        </form>
+        <p class="toggle-link">
+            이미 계정이 있으신가요? <a href="/" id="show-login-link">로그인</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>숨결 서비스 - 회원가입</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+
+    <script>
+        function initGeocoder() {
+            const addressInput = document.getElementById('hospital-address');
+            const latInput     = document.getElementById('hospital-lat');
+            const lngInput     = document.getElementById('hospital-lon');
+            if (!addressInput || !latInput || !lngInput) return;
+
+            addressInput.addEventListener('blur', () => {
+                const address = addressInput.value.trim();
+                if (!address) return;
+
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        const loc = results[0].geometry.location;
+                        latInput.value = loc.lat().toFixed(6);
+                        lngInput.value = loc.lng().toFixed(6);
+                    } else {
+                        console.warn('Geocoding 실패:', status);
+                    }
+                });
+            });
+        }
+    </script>
+
+    <script
+            async
+            defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1rV0-4F8G_7CJ5zc5OLLAVFdbdaQvEX8&libraries=places&callback=initGeocoder">
+    </script>
+
+<body>
+
+<div class="container" id="auth-container">
+    <div id="signup-container">
+        <h1>숨결</h1>
+        <h2>병원 등록 신청</h2>
+        <h3>본 서비스는 인증된 의료기관만 등록 가능합니다.</h3>
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="signup-email">이메일</label>
+                <input type="email" id="signup-email" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-password">비밀번호</label>
+                <input type="password" id="signup-password" minlength="6" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-name">병원 이름</label>
+                <input type="text" id="hospital-name" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-address">병원 주소</label>
+                <input type="text" id="hospital-address" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-lat">위도 (Latitude)</label>
+                <input type="number" step="any" id="hospital-lat" placeholder="예: 35.1796" required />
+            </div>
+            <div class="form-group">
+                <label for="hospital-lon">경도 (Longitude)</label>
+                <input type="number" step="any" id="hospital-lon" placeholder="예: 129.0756" required />
+            </div>
+            <button type="submit" class="btn">회원가입</button>
+        </form>
+        <p class="toggle-link">
+            이미 계정이 있으신가요? <a href="/" id="show-login-link">로그인</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
