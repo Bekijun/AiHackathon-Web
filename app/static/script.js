@@ -177,28 +177,45 @@ function rejectCall(callId) {
 // 대기 중인 응급 요청 리스너
 function listenForPendingCalls() {
     if (pendingCallsListener) pendingCallsListener();
-    const query = db.collection('emergency_calls').where('status', '==', 'pending');
-    pendingCallsListener = query.onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(change => {
-            const callData = change.doc.data();
-            const callId = change.doc.id;
-            const cardElement = document.getElementById(`pending-call-${callId}`);
-            const isRejected = callData.rejectedBy && callData.rejectedBy.includes(currentHospitalId);
+    if (!currentHospitalId) return;
 
-            if (isRejected || change.type === 'removed') {
-                if (cardElement) cardElement.remove();
-                return;
-            }
-            if (change.type === 'added' && !cardElement) {
-                const card = createPendingCallCard(callId, callData);
-                callsContainer.prepend(card);
-            }
-            if (change.type === 'modified') {
-                if (cardElement) cardElement.remove();
-            }
+    const hospitalRef = db.collection('hospitals').doc(currentHospitalId);
+
+    hospitalRef.get().then(hospitalDoc => {
+        const availableDepts = hospitalDoc.data().availableDepartments || [];
+
+        const query = db.collection('emergency_calls').where('status', '==', 'pending');
+
+        pendingCallsListener = query.onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                const callData = change.doc.data();
+                const callId = change.doc.id;
+
+                const recDepts = callData.recommendedDepartments || [];
+
+                // 병원이 처리 가능한 요청인지 판단
+                const isMatch = recDepts.some(dept => availableDepts.includes(dept));
+                if (!isMatch) return;  // 필터에 맞지 않으면 무시
+
+                const cardElement = document.getElementById(`pending-call-${callId}`);
+                const isRejected = callData.rejectedBy && callData.rejectedBy.includes(currentHospitalId);
+
+                if (isRejected || change.type === 'removed') {
+                    if (cardElement) cardElement.remove();
+                    return;
+                }
+                if (change.type === 'added' && !cardElement) {
+                    const card = createPendingCallCard(callId, callData);
+                    callsContainer.prepend(card);
+                }
+                if (change.type === 'modified') {
+                    if (cardElement) cardElement.remove();
+                }
+            });
+
+            noCallsMessage.style.display = callsContainer.querySelectorAll('.call-card').length === 0 ? 'block' : 'none';
         });
-        noCallsMessage.style.display = callsContainer.querySelectorAll('.call-card').length === 0 ? 'block' : 'none';
-    }, error => console.error("대기 요청 리스너 오류:", error));
+    });
 }
 
 // 수락한 응급 요청 리스너
