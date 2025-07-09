@@ -665,18 +665,62 @@ function removeDepartment(deptName) {
     });
 }
 
-// 치료 완료: 병원 기록으로 데이터를 복사하고, 원본 요청은 삭제
 function completeCase(callId, callData) {
-    const ref = db.collection('emergency_calls').doc(callId);
-    ref.update({
+    console.log("✅ completeCase() 호출됨");
+    console.log("📌 callId:", callId);
+    console.log("📌 callData:", callData);
+
+    if (!currentHospitalId || !currentHospitalName) {
+        console.warn("❗ currentHospitalId 또는 currentHospitalName이 설정되지 않았습니다.");
+        alert("병원 정보가 설정되지 않았습니다. 로그인 여부를 확인하세요.");
+        return;
+    }
+
+    // Firebase 객체 확인
+    if (!firebase || !firebase.firestore) {
+        console.error("❌ Firebase가 초기화되지 않았습니다.");
+        alert("Firebase 초기화 오류");
+        return;
+    }
+
+    const db = firebase.firestore();
+    const batch = db.batch();
+
+    // ✅ 새 문서 위치: hospitals/{currentHospitalId}/completed_cases/{callId}
+    const newCaseRef = db.collection('hospitals')
+        .doc(currentHospitalId)
+        .collection('completed_cases')
+        .doc(callId);
+
+    const caseRecord = {
+        ...callData,
         status: 'completed',
+        acceptedHospitalName: currentHospitalName,
         caseCompletedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        alert('환자 치료를 완료하고 기록에 반영했습니다.');
-        // UI 카드만 지우고 문서는 남겨둠
-        document.getElementById(`accepted-call-${callId}`)?.remove();
-    });
+    };
+
+    console.log("📦 저장할 문서 내용:", caseRecord);
+
+    // 🔁 batch 작업 구성
+    batch.set(newCaseRef, caseRecord);
+
+    const originalCallRef = db.collection('emergency_calls').doc(callId);
+    batch.delete(originalCallRef);
+
+    // ✅ 커밋 및 결과 확인
+    batch.commit()
+        .then(() => {
+            console.log("✅ Firestore batch 저장 및 삭제 성공");
+            alert("환자 치료를 완료하고 병원 기록으로 이전했습니다.\n(원본 요청은 삭제되었습니다)");
+            document.getElementById(`accepted-call-${callId}`)?.remove();
+        })
+        .catch(error => {
+            console.error("❌ 치료 완료 처리 중 오류:", error);
+            alert("Firestore에 기록 저장 중 오류가 발생했습니다.");
+        });
 }
+
+
 
 // -------------------
 // 수락 / 거절 처리
@@ -1085,33 +1129,32 @@ auth.onAuthStateChanged(user => {
                         return Promise.reject("Hospital doc not found.");
                     }
 
-                    // 병원 기본 정보 세팅
                     const hd = hospitalDoc.data();
                     currentHospitalName = hd.hospitalName;
-                    managementTitle.textContent        = `${hd.hospitalName} 응급실 관리`;
-                    updateTotalBeds.value              = hd.beds.total;
-                    updateAvailableBeds.value          = hd.beds.available;
+                    if (managementTitle) managementTitle.textContent = `${hd.hospitalName} 응급실 관리`;
+                    if (updateTotalBeds) updateTotalBeds.value = hd.beds.total;
+                    if (updateAvailableBeds) updateAvailableBeds.value = hd.beds.available;
                     renderDepartmentTags(hd.availableDepartments);
 
-                    // 1) 병원 문서 구독: 병상 변화 -> pending list on/off
-                    db.collection('hospitals').doc(currentHospitalId)
-                        .onSnapshot(hsnap => {
-                            const avail = hsnap.data().beds.available || 0;
-                            updateAvailableBeds.value = avail;
-                            if (avail <= 0) {
-                                callsContainer.innerHTML = '<p class="no-beds">가용 병상이 없습니다.</p>';
-                                if (pendingCallsListener) pendingCallsListener(); // 해제
-                            } else {
-                                listenForPendingCalls();
-                            }
-                        });
+                    // 병상 변화 감지 → 대기 리스트 제어
+                    db.collection('hospitals').doc(currentHospitalId).onSnapshot(hsnap => {
+                        const avail = hsnap.data().beds.available || 0;
+                        updateAvailableBeds.value = avail;
+                        if (avail <= 0) {
+                            callsContainer.innerHTML = '<p class="no-beds">가용 병상이 없습니다.</p>';
+                            if (pendingCallsListener) pendingCallsListener(); // 리스너 해제
+                        } else {
+                            listenForPendingCalls();
+                        }
+                    });
 
-                    // 2) 응급콜 리스너
                     listenForAcceptedCalls();
-                    // 3) 수락/거절 모아보기(히스토리)
                     subscribeHistory();
-                    // 4) AI 요약
-                    fetchAISummary(currentHospitalId);
+
+                    // ✅ AI 요약 컨테이너 있을 때만 실행
+                    if (document.getElementById("ai-summary-container")) {
+                        fetchAISummary(currentHospitalId);
+                    }
                 })
                 .catch(err => {
                     console.error("데이터 로드 중 오류:", err);
@@ -1120,25 +1163,23 @@ auth.onAuthStateChanged(user => {
         }
 
     } else {
-        // 로그아웃 된 상태
+        // 로그아웃 상태
         if (path === '/main') {
             window.location.href = '/';
             return;
         }
-        // cleanup
         currentHospitalId = null;
         currentHospitalName = null;
         if (pendingCallsListener)  pendingCallsListener();
         if (acceptedCallsListener) acceptedCallsListener();
-        callsContainer.innerHTML         = '<p id="no-calls-message">현재 대기 중인 요청이 없습니다.</p>';
-        acceptedCallsContainer.innerHTML = '<p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>';
-        if (loginForm)  loginForm.reset();
+        if (callsContainer) callsContainer.innerHTML = '<p id="no-calls-message">현재 대기 중인 요청이 없습니다.</p>';
+        if (acceptedCallsContainer) acceptedCallsContainer.innerHTML = '<p id="no-accepted-calls-message">현재 치료 중인 환자가 없습니다.</p>';
+        if (loginForm) loginForm.reset();
         if (signupForm) signupForm.reset();
     }
 });
 
-
-// --- 앱 시작 시 초기화 (현재 페이지에 요소가 있는 경우에만 실행) ---
+// --- 페이지 요소 초기화
 if (departmentSelect) {
     populateDepartmentSelect();
 }
@@ -1315,64 +1356,43 @@ function renderHistory() {
             tableBody.appendChild(tr);
         });
 }
-
-// AI Summary 부분은 main.html에만 존재하므로, 해당 페이지에서만 실행되도록 조건부 처리
-if (document.getElementById("ai-summary-container")) {
-    firebase.auth().onAuthStateChanged(async (user) => {
-        if (user) {
-            try {
-                // 1. 사용자 UID로 users/{uid} 문서 가져오기
-                const userDoc = await db.collection("users").doc(user.uid).get();
-                if (!userDoc.exists) throw new Error("❌ 사용자 문서 없음");
-
-                // 2. 문서 안의 hospitalId 필드 가져오기 (이게 진짜 병원 Firestore ID)
-                const hospitalId = userDoc.data().hospitalId;
-                console.log("🏥 로그인한 병원의 Firestore ID:", hospitalId);
-
-                // 3. 요약 분석 요청
-                fetchAISummary(hospitalId);
-
-            } catch (error) {
-                console.error("🚨 병원 ID 로딩 실패:", error);
-                document.getElementById("ai-summary-container").innerText = "❌ 병원 데이터를 불러올 수 없습니다.";
-            }
-        } else {
-            // 로그아웃 처리: AI 요약 컨테이너 숨기기 또는 메시지 표시
-            const aiSummaryContainer = document.getElementById("ai-summary-container");
-            if (aiSummaryContainer) {
-                aiSummaryContainer.innerText = "로그인 후 AI 요약을 확인할 수 있습니다.";
-            }
-        }
-    });
+// ✅ 1. 함수 정의: fetchAISummary 바깥에 위치
+function removeZeroLines(text) {
+    return text
+        .split('\n')
+        .filter(line => !line.includes("→ 0명") && !line.includes("0명"))
+        .join('\n');
 }
-
 
 async function fetchAISummary(hospitalId) {
     console.log("✅ fetchAISummary 전달 ID:", hospitalId);
 
     const container = document.getElementById("ai-summary-container");
-    if (!container) return; // AI 요약 컨테이너가 없으면 실행하지 않음
+    if (!container) return;
 
     try {
         const res = await fetch(`http://127.0.0.1:8084/api/ai-summary?hospital_id=${hospitalId}`);
         const data = await res.json();
         console.log("📦 AI 요약 응답:", data);
 
-        container.innerHTML = ""; // 기존 내용 제거
+        container.innerHTML = "";
 
-        // ⛔ 구분선으로 split하는 방식은 취약하므로, 제목 기준으로 분리
-        const raw = data.result;
-
+        // ✅ 3. 먼저 0명 줄 제거
+        const raw = removeZeroLines(data.result);
+        // ⛏️ 명확하게 각 섹션을 구분
         const section1 = raw.match(/📊 시간대별 환자 수([\s\S]*?)👶 연령대별 환자 수/);
         const section2 = raw.match(/👶 연령대별 환자 수([\s\S]*?)🩺 증상별 진료과목 추천/);
-        const section3 = raw.match(/🩺 증상별 진료과목 추천([\s\S]*)/);
+        const section3 = raw.match(/🩺 증상별 진료과목 추천([\s\S]*?)🧠 AI 분석 결과/);
+        const section4 = raw.match(/🧠 AI 분석 결과([\s\S]*)/);
 
         const sections = [
             { title: "📊 시간대별 환자 수", content: section1?.[1]?.trim() || "정보 없음" },
             { title: "👶 연령대별 환자 수", content: section2?.[1]?.trim() || "정보 없음" },
             { title: "🩺 증상별 진료과목 추천", content: section3?.[1]?.trim() || "정보 없음" },
+            { title: "🧠 AI 분석 결과", content: section4?.[1]?.trim() || "정보 없음" },
         ];
 
+        // 📦 카드 생성
         sections.forEach(({ title, content }) => {
             const card = document.createElement("div");
             card.className = "summary-card";
@@ -1383,12 +1403,11 @@ async function fetchAISummary(hospitalId) {
 
             const body = document.createElement("div");
             body.className = "summary-text";
-            // 🔧 구분선 제거 + 줄바꿈 처리
             const cleanContent = content
                 .split('\n')
-                .filter(line => !line.includes("━━━━━━━━"))  // 밑줄 제거
+                .filter(line => !line.includes("━━━━━━━━"))
                 .join("<br>");
-            body.innerHTML = cleanContent; // ✅ cleanContent를 실제로 사용
+            body.innerHTML = cleanContent;
 
             card.appendChild(header);
             card.appendChild(body);
@@ -1431,4 +1450,41 @@ async function fetchAISummary(hospitalId) {
 
 // 구글 맵스 라이브러리가 로드된 후 initGeocoder 실행
     window.initGeocoder = initGeocoder;
+}
+// ------------------------------
+// 🔎 비정상 age 데이터 탐지 함수
+// ------------------------------
+async function findInvalidAges(hospitalId) {
+    const snapshot = await db.collection('hospitals')
+        .doc(hospitalId)
+        .collection('completed_cases')
+        .get();
+
+    let invalidPatients = [];
+    let totalPatients = 0;
+
+    snapshot.forEach(doc => {
+        const data = doc.data();
+        totalPatients++;
+
+        const age = data?.patientInfo?.age;
+
+        if (
+            age === undefined ||
+            age === null ||
+            age === '' ||
+            isNaN(age) ||
+            Number(age) < 0
+        ) {
+            invalidPatients.push({
+                id: doc.id,
+                name: data?.patientInfo?.name ?? '이름 없음',
+                age: age
+            });
+        }
+    });
+
+    console.log(`📊 전체 환자 수: ${totalPatients}명`);
+    console.log(`❗ 나이 누락/비정상 데이터 수: ${invalidPatients.length}명`);
+    console.table(invalidPatients);
 }
